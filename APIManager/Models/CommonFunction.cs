@@ -28,7 +28,7 @@ namespace APIManager.Models
 
         public object InvokeFunction(String UC_ID)
         {
-            string methodName = "CreateMD5";
+            string methodName = "TestMethod";
             string ClassName = "CommonFunction";
             string[] sParam = {"MODULE1" };
             
@@ -42,7 +42,8 @@ namespace APIManager.Models
             // (null- no parameter for the method call
             // or you can pass the array of parameters...)
             //   mi.Invoke(this, null);
-            return mi.Invoke(this, sParam);
+          //  return mi.Invoke(this, sParam);
+            return mi.Invoke(fi, null);
         }
 
         public object InvokeSP(String UC_ID)
