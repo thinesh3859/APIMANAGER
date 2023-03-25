@@ -1,0 +1,73 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin: 0px;
+}
+
+
+.header {
+    display: flex;
+    height: 55px;
+    background: #D9D9D6;
+    align-items: center;
+    padding-left: 10px;
+}
+    .header span {
+        font-size: larger;
+        font-family: math;
+        font-weight: 700;
+        color: #272727;
+    }
+
+.LeftMenu {
+    display: flex;
+    width: 68px;
+    background-color: #F0F0F0;
+    box-shadow: inset 0px -1px 2px 1px #26262617;
+    flex-direction: column;
+}
+
+    .LeftMenu .menuicon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .LeftMenu .menuicon img{
+       width: 25px;
+    }
+
+.IconText {
+    font-size: 12px;
+    padding-top: 5px;
+    text-align: center;
+}
+
+.LeftMenuDiv {
+    display: flex;
+    flex-direction: column;
+    height: 68px;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.5s ;
+
+}
+
+.LeftMenuDiv:hover{
+    background-color:white;
+    cursor:pointer;
+
+}

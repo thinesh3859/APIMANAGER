@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - APIManager</title>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/APIManager.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <div style="display: flex;flex-direction: column;    height: 100vh;">
+
+        <div class="header">
+            <span>API Manager</span>
+       </div>
+        <div style="display: flex;flex-direction: row; height: inherit;">
+            <div class="LeftMenu" >
+                <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/home.png" /></div>
+                    <div class="IconText">Home</div>
+                </div>
+              
+                <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/stamp.png" /></div>
+                    <div class="IconText">Licensing</div>
+                </div>
+                  <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/deep-learning.png" /></div>
+                    <div class="IconText">Mapping</div>
+                </div>
+                  <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/connection.png" /></div>
+                    <div class="IconText">Channel</div>
+                </div>
+                <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/report.png" /></div>
+                    <div class="IconText">Reports</div>
+                </div>
+
+                <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/web-development.png" /></div>
+                    <div class="IconText">Manage API</div>
+                </div>
+
+                <div class="LeftMenuDiv">
+                    <div class="menuicon"><img src="image/businessman.png" /></div>
+                    <div class="IconText">Manage Users</div>
+                </div>
+            </div>
+            <div style="display: flex;width: calc(100% - 70px);    padding: 10px;">
+                @RenderBody()
+            </div>
+       </div>
+   </div>
+  
+
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
