@@ -18,6 +18,11 @@ namespace APIManager.Controllers
             return View();
         }
 
+        public IActionResult License()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
