@@ -52,5 +52,53 @@ namespace APIManager.Models
             return "";
         }
 
+        public Outputenum ValidateRequest(Inputenum ie)
+        {
+            Outputenum oe = new Outputenum();
+
+            if (ie.UC_ID == "" || ie.UC_ID == null)
+            {
+                oe.STATUS = "F";
+                oe.StatusMessage = "UC_ID can't be empty";
+                oe.output = new System.Text.Json.Nodes.JsonArray();
+            }
+            else if (ie.Module == "" || ie.Module == null)
+            {
+                oe.STATUS = "F";
+                oe.StatusMessage = "Module can't be empty";
+                oe.output = new System.Text.Json.Nodes.JsonArray();
+            }
+            else if (!ValidateUC_ID(ie.UC_ID,ie.Module))
+            {
+                oe.STATUS = "F";
+                oe.StatusMessage = "Invalid UC_ID";
+                oe.output = new System.Text.Json.Nodes.JsonArray();
+            }
+
+
+
+            return oe;
+        }
+
+
+        public bool ValidateUC_ID(string uc_id, string module)
+        {
+
+            if (uc_id == "UC_001" && module == "M001")
+                return true;
+            else 
+                return false;
+        }
+
+        public Outputenum InvokeRequest(Inputenum ie)
+        {
+            Outputenum oe = new Outputenum();
+            oe.STATUS = "S";
+            oe.StatusMessage = "Success";
+            return oe;
+
+        }
+
+
     }
 }
