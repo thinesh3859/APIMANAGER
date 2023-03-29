@@ -29,6 +29,7 @@ namespace APIManager.Controllers
             string ip = "";
             Inputenum InputJson = new Inputenum() ;
             CommonFunction cf = new CommonFunction();
+            DBComponent db = new DBComponent();
 
             //Check security valid IPAddress client
 
@@ -48,7 +49,9 @@ namespace APIManager.Controllers
 
                  oe=  cf.ValidateRequest(InputJson);
 
-                 if( oe.STATUS == null)
+                 db.SelectStatement(QueryManager.VALIDATE_UC_ID, QueryManager.MSSQL);
+
+                 if ( oe.STATUS == null)
                  {
                     oe = cf.InvokeRequest(InputJson);
 
