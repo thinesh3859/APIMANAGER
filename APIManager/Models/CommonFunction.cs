@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using System.Reflection;
 
 namespace APIManager.Models
@@ -26,12 +27,11 @@ namespace APIManager.Models
         }
 
 
-        public object InvokeFunction(String UC_ID)
+        public Outputenum InvokeFunction(string methodname)
         {
-            string methodName = "TestMethod";
+            string methodName = methodname;
             string ClassName = "CommonFunction";
-            string[] sParam = {"MODULE1" };
-            
+           
             //Class Having the function to trigger
             FunctionTrigger fi = new FunctionTrigger();
 
@@ -43,7 +43,7 @@ namespace APIManager.Models
             // or you can pass the array of parameters...)
             //   mi.Invoke(this, null);
           //  return mi.Invoke(this, sParam);
-            return mi.Invoke(fi, null);
+            return (Outputenum)mi.Invoke(fi, null);
         }
 
         public object InvokeSP(String UC_ID)
@@ -83,16 +83,49 @@ namespace APIManager.Models
 
         public bool ValidateUC_ID(string uc_id, string module)
         {
+            DBComponent db = new DBComponent();
+            List<Hashtable> lht = new List<Hashtable>();
+            string  uc_count = null;
+             uc_count  = db.SelectSingletonStatement(QueryManager.VALIDATE_UC_ID, GetUsecaseDatabase(uc_id, module));
+
+            if (uc_count != null)
+                if (int.Parse(uc_count) == 1)
+                    return true;
+                else
+                    return false;
+            else
+                return false;
+        }
+
+        public string GetUsecaseDatabase(string uc_id, string module)
+        {
 
             if (uc_id == "UC_001" && module == "M001")
-                return true;
-            else 
-                return false;
+                return QueryManager.MSSQL;
+            else
+                return QueryManager.MSSQL;
         }
 
         public Outputenum InvokeRequest(Inputenum ie)
         {
             Outputenum oe = new Outputenum();
+            DBComponent db = new DBComponent();
+            List<Hashtable> lht = new List<Hashtable>();
+            Hashtable ht = new Hashtable();
+            lht = db.SelectStatement(QueryManager.GET_UC_METHOD_NAME, GetUsecaseDatabase(ie.UC_ID, ie.Module)); ;
+            ht = lht[0];
+
+            if (ht["IS_METHOD"] == "Y")
+            {
+                string sMethodName = ht["METHOD_NAME"].ToString();
+               oe = InvokeFunction(sMethodName);
+            }
+            else
+            {
+                lht = db.SelectStatement(QueryManager.GET_UC_SP_NAME, GetUsecaseDatabase(ie.UC_ID, ie.Module));
+            }
+            
+
             oe.STATUS = "S";
             oe.StatusMessage = "Success";
             return oe;

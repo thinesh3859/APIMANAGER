@@ -36,6 +36,9 @@ namespace APIManager.Models
 
                 conn.Open();
                 dr = cmd.ExecuteReader();
+
+               // ICollection keys = dr.GetColumnSchema;
+
                 while (dr.Read())
                 {
                     ht = new Hashtable();
@@ -62,6 +65,44 @@ namespace APIManager.Models
             return listht;
         }
 
+
+        public string SelectSingletonStatement(string query, Hashtable input)
+        {
+            Hashtable ht = new Hashtable();
+            List<Hashtable> listht = new List<Hashtable>();
+            string output = null;
+            SqlConnection conn;
+
+            try
+            {
+                conn = GetConnection();
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+
+                foreach (DictionaryEntry item in input)
+                {
+                    cmd.Parameters.AddWithValue("@" + item.Key, item.Value);
+                }
+
+                conn.Open();
+                output = (string)cmd.ExecuteScalar();
+              
+                conn.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+              
+                conn = null;
+            }
+
+
+            return output;
+        }
 
         private static SqlConnection GetConnection()
         {

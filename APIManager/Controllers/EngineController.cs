@@ -49,8 +49,7 @@ namespace APIManager.Controllers
 
                  oe=  cf.ValidateRequest(InputJson);
 
-                 db.SelectStatement(QueryManager.VALIDATE_UC_ID, QueryManager.MSSQL);
-
+               
                  if ( oe.STATUS == null)
                  {
                     oe = cf.InvokeRequest(InputJson);

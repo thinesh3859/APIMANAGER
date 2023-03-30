@@ -30,5 +30,30 @@ namespace APIManager.Models
             return listht;
         }
 
+        public string SelectSingletonStatement(string query, string DBServer)
+        {
+            Hashtable ht = new Hashtable();
+            List<Hashtable> listht = new List<Hashtable>();
+            string output = null;
+
+            switch (DBServer)
+            {
+                case "MSSQL":
+                    MSSQLDBComponent msql = new MSSQLDBComponent();
+                    output = msql.SelectSingletonStatement("", ht);
+                    msql = null;
+                    break;
+                case "ORACLE":
+                    break;
+
+            }
+
+
+
+
+
+            return output;
+        }
+
     }
 }
