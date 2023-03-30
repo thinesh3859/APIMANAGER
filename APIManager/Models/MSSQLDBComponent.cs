@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 
@@ -102,6 +104,28 @@ namespace APIManager.Models
 
 
             return output;
+        }
+
+        public Outputenum ExecuteSP(Inputenum ie)
+        {
+            Outputenum oe = new Outputenum();
+            SqlConnection conn = GetConnection();
+
+            conn.Open();
+            SqlCommand sql_cmnd = new SqlCommand("PROC_NAME", conn);
+            sql_cmnd.CommandType = CommandType.StoredProcedure;
+            sql_cmnd.Parameters.AddWithValue("@FIRST_NAME", SqlDbType.NVarChar).Value = "";
+            sql_cmnd.Parameters.AddWithValue("@LAST_NAME", SqlDbType.NVarChar).Value = "";
+            sql_cmnd.Parameters.AddWithValue("@AGE", SqlDbType.Int).Value = "";
+            sql_cmnd.ExecuteNonQuery();
+
+            //output valyes
+            int contractID = Convert.ToInt32(sql_cmnd.Parameters["@NewId"].Value);
+
+            conn.Close();
+
+            return oe;
+
         }
 
         private static SqlConnection GetConnection()

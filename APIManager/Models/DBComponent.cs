@@ -22,11 +22,6 @@ namespace APIManager.Models
                     break;
              
             }
-
-           
-         
-
-
             return listht;
         }
 
@@ -47,12 +42,28 @@ namespace APIManager.Models
                     break;
 
             }
-
-
-
-
-
             return output;
+        }
+
+
+        public Outputenum ExecuteSP(Inputenum ie, string DBServer)
+        {
+
+            Outputenum oe = new Outputenum();
+
+            switch (DBServer)
+            {
+                case "MSSQL":
+                    MSSQLDBComponent msql = new MSSQLDBComponent();
+                    oe = msql.ExecuteSP(ie);
+                    msql = null;
+                    break;
+                case "ORACLE":
+                    break;
+
+            }
+
+            return oe;
         }
 
     }

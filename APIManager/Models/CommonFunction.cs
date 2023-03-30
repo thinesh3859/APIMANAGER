@@ -46,7 +46,7 @@ namespace APIManager.Models
             return (Outputenum)mi.Invoke(fi, null);
         }
 
-        public object InvokeSP(String UC_ID)
+        public object InvokeSP(Inputenum ie)
         {
            
             return "";
