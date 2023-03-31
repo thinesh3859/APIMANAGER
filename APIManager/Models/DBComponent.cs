@@ -5,9 +5,9 @@ namespace APIManager.Models
 {
     public class DBComponent
     {
-        public List< Hashtable> SelectStatement(string query,string DBServer)
+        public List< Hashtable> SelectStatement(string query, Hashtable ht, string DBServer)
         {
-            Hashtable ht = new Hashtable();
+           // Hashtable ht = new Hashtable();
             List< Hashtable> listht = new List< Hashtable>();
 
 
@@ -15,7 +15,7 @@ namespace APIManager.Models
             {
                 case "MSSQL":
                     MSSQLDBComponent msql = new MSSQLDBComponent();
-                    listht = msql.SelectStatement("", ht);
+                    listht = msql.SelectStatement(query, ht);
                     msql = null;
                     break;
                 case "ORACLE":
@@ -25,9 +25,9 @@ namespace APIManager.Models
             return listht;
         }
 
-        public string SelectSingletonStatement(string query, string DBServer)
+        public string SelectSingletonStatement(string query,Hashtable ht, string DBServer)
         {
-            Hashtable ht = new Hashtable();
+           // Hashtable ht = new Hashtable();
             List<Hashtable> listht = new List<Hashtable>();
             string output = null;
 
@@ -35,7 +35,7 @@ namespace APIManager.Models
             {
                 case "MSSQL":
                     MSSQLDBComponent msql = new MSSQLDBComponent();
-                    output = msql.SelectSingletonStatement("", ht);
+                    output = msql.SelectSingletonStatement(query, ht);
                     msql = null;
                     break;
                 case "ORACLE":

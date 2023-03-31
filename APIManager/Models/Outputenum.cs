@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Collections;
+using System.Text.Json.Nodes;
 
 namespace APIManager.Models
 {
@@ -6,6 +7,6 @@ namespace APIManager.Models
     {
         public string STATUS { get; set; }
         public string StatusMessage { get; set; }
-        public JsonArray output { get; set; }
+        public List<Hashtable> output { get; set; }
     }
 }

@@ -31,25 +31,36 @@ namespace APIManager.Models
         {
             string methodName = methodname;
             string ClassName = "CommonFunction";
-           
-            //Class Having the function to trigger
-            FunctionTrigger fi = new FunctionTrigger();
+            try
+            {
+                //Class Having the function to trigger
+                FunctionTrigger fi = new FunctionTrigger();
 
-            //Get the method information using the method info class
-            MethodInfo mi = fi.GetType().GetMethod(methodName);
+                //Get the method information using the method info class
+                MethodInfo mi = fi.GetType().GetMethod(methodName);
 
-            //Invoke the method
-            // (null- no parameter for the method call
-            // or you can pass the array of parameters...)
-            //   mi.Invoke(this, null);
-          //  return mi.Invoke(this, sParam);
-            return (Outputenum)mi.Invoke(fi, null);
+                //Invoke the method
+                // (null- no parameter for the method call
+                // or you can pass the array of parameters...)
+                //   mi.Invoke(this, null);
+                //  return mi.Invoke(this, sParam);
+                return (Outputenum)mi.Invoke(fi, null);
+            }
+            catch(Exception ex)
+            {
+                Outputenum oe = new Outputenum();
+                oe.STATUS = "F";
+                oe.StatusMessage = ex.Message;
+                return oe;
+            }
+          
         }
 
-        public object InvokeSP(Inputenum ie)
+        public Outputenum InvokeSP(Inputenum ie)
         {
-           
-            return "";
+            Outputenum oe = new Outputenum();
+
+            return oe;
         }
 
         public Outputenum ValidateRequest(Inputenum ie)
@@ -60,19 +71,19 @@ namespace APIManager.Models
             {
                 oe.STATUS = "F";
                 oe.StatusMessage = "UC_ID can't be empty";
-                oe.output = new System.Text.Json.Nodes.JsonArray();
+                oe.output = null;
             }
             else if (ie.Module == "" || ie.Module == null)
             {
                 oe.STATUS = "F";
                 oe.StatusMessage = "Module can't be empty";
-                oe.output = new System.Text.Json.Nodes.JsonArray();
+                oe.output =null;
             }
             else if (!ValidateUC_ID(ie.UC_ID,ie.Module))
             {
                 oe.STATUS = "F";
                 oe.StatusMessage = "Invalid UC_ID";
-                oe.output = new System.Text.Json.Nodes.JsonArray();
+                oe.output = null;
             }
 
 
@@ -84,9 +95,13 @@ namespace APIManager.Models
         public bool ValidateUC_ID(string uc_id, string module)
         {
             DBComponent db = new DBComponent();
+            Hashtable ht = new Hashtable();
             List<Hashtable> lht = new List<Hashtable>();
             string  uc_count = null;
-             uc_count  = db.SelectSingletonStatement(QueryManager.VALIDATE_UC_ID, GetUsecaseDatabase(uc_id, module));
+
+            ht.Add("UC_ID",uc_id);
+            ht.Add("MODULE",module);
+            uc_count  = db.SelectSingletonStatement(QueryManager.VALIDATE_UC_ID,ht, GetUsecaseDatabase(uc_id, module));
 
             if (uc_count != null)
                 if (int.Parse(uc_count) == 1)
@@ -112,22 +127,32 @@ namespace APIManager.Models
             DBComponent db = new DBComponent();
             List<Hashtable> lht = new List<Hashtable>();
             Hashtable ht = new Hashtable();
-            lht = db.SelectStatement(QueryManager.GET_UC_METHOD_NAME, GetUsecaseDatabase(ie.UC_ID, ie.Module)); ;
+            string Database = GetUsecaseDatabase(ie.UC_ID, ie.Module);
+
+            ht.Add("UC_ID", ie.UC_ID);
+            ht.Add("MODULE", ie.Module);
+
+            lht = db.SelectStatement(QueryManager.GET_UC_METHOD_NAME, ht, Database); ;
             ht = lht[0];
 
-            if (ht["IS_METHOD"] == "Y")
+           
+            if (ht["IS_METHOD"].ToString() == "Y")
             {
                 string sMethodName = ht["METHOD_NAME"].ToString();
                oe = InvokeFunction(sMethodName);
             }
             else
             {
-                lht = db.SelectStatement(QueryManager.GET_UC_SP_NAME, GetUsecaseDatabase(ie.UC_ID, ie.Module));
+                ht.Add("UC_ID", ie.UC_ID);
+                ht.Add("MODULE", ie.Module);
+                lht = db.SelectStatement(QueryManager.GET_UC_SP_NAME,ht, Database);
+                ht = lht[0];
+                string sSP_NAME = ht["SP_NAME"].ToString();
+                oe = InvokeSP(ie);
             }
-            
 
-            oe.STATUS = "S";
-            oe.StatusMessage = "Success";
+            //oe.STATUS = "S";
+            //oe.StatusMessage = "Success";
             return oe;
 
         }

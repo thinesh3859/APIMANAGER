@@ -60,7 +60,7 @@ namespace APIManager.Controllers
             {
                 oe.STATUS = "F";
                 oe.StatusMessage = "IP Not whitelisted";
-                oe.output = new JsonArray();
+                oe.output = null;
                 this.HttpContext.Response.StatusCode = 401; // Unauthorized
             }
 
