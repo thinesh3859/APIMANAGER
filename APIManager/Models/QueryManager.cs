@@ -6,6 +6,7 @@
         public static string ORACLE = "ORACLE";
         public static string MYSQL = "MYSQL";
 
+        public static string DB_SERVER = "";
 
         public static string VALIDATE_UC_ID = "SELECT count(1) FROM TBL_USECASE_MST WHERE USECASE_ID=@UC_ID AND MODULE_ID=@MODULE";
         public static string GET_UC_METHOD_NAME = "select IS_METHOD,METHOD_NAME FROM TBL_USECASE_MST WHERE USECASE_ID=@UC_ID AND MODULE_ID=@MODULE";

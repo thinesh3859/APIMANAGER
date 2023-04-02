@@ -56,9 +56,12 @@ namespace APIManager.Models
           
         }
 
-        public Outputenum InvokeSP(Inputenum ie)
+        public Outputenum InvokeSP(Inputenum ie,string DBServer)
         {
             Outputenum oe = new Outputenum();
+            DBComponent db = new DBComponent();
+
+            oe = db.ExecuteSP(ie, DBServer);
 
             return oe;
         }
@@ -79,7 +82,7 @@ namespace APIManager.Models
                 oe.StatusMessage = "Module can't be empty";
                 oe.output =null;
             }
-            else if (!ValidateUC_ID(ie.UC_ID,ie.Module))
+            else if (!ValidateUC_ID(ie))
             {
                 oe.STATUS = "F";
                 oe.StatusMessage = "Invalid UC_ID";
@@ -143,6 +146,7 @@ namespace APIManager.Models
             }
             else
             {
+                ht = new Hashtable();
                 ht.Add("UC_ID", ie.UC_ID);
                 ht.Add("MODULE", ie.Module);
                 lht = db.SelectStatement(QueryManager.GET_UC_SP_NAME,ht, Database);

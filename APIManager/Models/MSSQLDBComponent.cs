@@ -10,7 +10,8 @@ namespace APIManager.Models
 {
     public class MSSQLDBComponent
     {
-        public static string conStr = "Server=localhost;Database=APIHome;User ID=sa;Password=Sun$h!n3EW8aj8Wm;Trusted_Connection=True;MultipleActiveResultSets=true";
+       // public static string conStr = "Server=localhost;Database=APIHome;User ID=sa;Password=Sun$h!n3EW8aj8Wm;Trusted_Connection=True;MultipleActiveResultSets=true";
+        public static string HomeconStr = "Server=localhost;Database=APIHome;User ID=sa;Password=Sun$h!n3EW8aj8Wm;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         //public  MSSQLDBComponent()
         //{
@@ -19,7 +20,7 @@ namespace APIManager.Models
 
         
 
-        public List<Hashtable> SelectStatement(string query,Hashtable input)
+        public List<Hashtable> SelectStatement(string query,Hashtable input,DBServerenum de)
         {
             Hashtable ht = new Hashtable();
             List<Hashtable> listht = new List<Hashtable>();
@@ -28,7 +29,7 @@ namespace APIManager.Models
 
             try
             {
-                conn = GetConnection();
+                conn = GetConnection(de);
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -72,7 +73,7 @@ namespace APIManager.Models
         }
 
 
-        public string SelectSingletonStatement(string query, Hashtable input)
+        public string SelectSingletonStatement(string query, Hashtable input,DBServerenum de)
         {
             Hashtable ht = new Hashtable();
             List<Hashtable> listht = new List<Hashtable>();
@@ -81,7 +82,7 @@ namespace APIManager.Models
 
             try
             {
-                conn = GetConnection();
+                conn = GetConnection(de);
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -110,10 +111,10 @@ namespace APIManager.Models
             return output;
         }
 
-        public Outputenum ExecuteSP(Inputenum ie)
+        public Outputenum ExecuteSP(DBServerenum de)
         {
             Outputenum oe = new Outputenum();
-            SqlConnection conn = GetConnection();
+            SqlConnection conn = GetConnection(de);
 
             conn.Open();
             SqlCommand sql_cmnd = new SqlCommand("PROC_NAME", conn);
@@ -132,12 +133,15 @@ namespace APIManager.Models
 
         }
 
-        private static SqlConnection GetConnection()
+        private static SqlConnection GetConnection(DBServerenum de)
         {
             try
             {
-                SqlConnection connection = new SqlConnection(conStr);
-                return connection;
+               
+                string conStr = "Server="+de.HOST_NAME.ToString()+";Database="+ de.DBNAME.ToString() +";User ID="+ de.USER_NAME.ToString() +";Password="+de.PASSWORD.ToString()+";Trusted_Connection=True;MultipleActiveResultSets=true";
+                SqlConnection dbconnection = new SqlConnection(conStr);
+
+                return dbconnection;
             }
             catch (Exception e)
             {
